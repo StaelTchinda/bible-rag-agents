@@ -1,0 +1,29 @@
+{
+  "name": "bible-rag-agents",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Scripture-grounded multi-agent RAG that runs in your browser, free.",
+  "packageManager": "pnpm@9.15.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write .",
+    "ingest": "pnpm --filter @bible-rag/bible-data ingest",
+    "build-index": "pnpm --filter @bible-rag/bible-data build-index",
+    "verify-data": "pnpm --filter @bible-rag/bible-data verify"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "turbo": "^2.3.3",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}

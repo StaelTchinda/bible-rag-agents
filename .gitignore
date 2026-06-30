@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build output
+dist/
+build/
+*.tsbuildinfo
+
+# Generated Bible data & index (rebuilt from sources via the bible-data CLI)
+packages/bible-data/data/
+packages/bible-data/dist-index/
+apps/web/public/index/
+
+# Caches
+.turbo/
+.vite/
+coverage/
+
+# Env & local
+.env
+.env.*
+!.env.example
+*.local
+
+# OS / editor
+.DS_Store
+*.log
