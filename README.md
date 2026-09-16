@@ -39,7 +39,8 @@ The twist: the agents disagree on purpose. One builds a deliberately one-sided c
 
 ```bash
 pnpm install            # install workspace dependencies
-pnpm build-index        # download public-domain Bibles & build the embedding index (first run only)
+pnpm ingest             # download public-domain Bibles (first run only) 
+pnpm build-index        # build the embedding index (first run only)
 pnpm dev                # start the web app (and backend, if running)
 ```
 
