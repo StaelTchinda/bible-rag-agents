@@ -101,17 +101,18 @@ describe("retrieval evaluation metrics", () => {
       { ref: "PSA.23.1" },
       { ref: "JHN.3.16" },
     ]);
-    const emptyResult = scoreRetrievalExample(unanswerable, []);
+    const emptyCorrectResult = scoreRetrievalExample(unanswerable, []);
     const falsePositiveResult = scoreRetrievalExample(unanswerable, [{ ref: "GEN.1.1" }]);
 
     expect(relevantResult).toMatchObject({
       hit: true,
       reciprocalRank: 0.5,
+      recall: 1,
       precision: 0.5,
       falsePositive: false,
     });
-    expect(emptyResult).toMatchObject({ hit: true, precision: 1, falsePositive: false });
-    expect(falsePositiveResult).toMatchObject({ hit: true, precision: 0, falsePositive: true });
+    expect(emptyCorrectResult).toMatchObject({ hit: true, precision: 1, falsePositive: false });
+    expect(falsePositiveResult).toMatchObject({ hit: false, precision: 0, falsePositive: true });
   });
 
   it("aggregates overall and category metrics", () => {
@@ -124,12 +125,30 @@ describe("retrieval evaluation metrics", () => {
     expect(report).toMatchObject({
       count: 2,
       hitRate: 1,
+      answerableHitRate: 1,
       meanReciprocalRank: 0.5,
+      meanRecall: 1,
       meanPrecision: 1,
       falsePositiveRate: 0,
     });
     expect(report.byCategory.direct?.hitRate).toBe(1);
+    expect(report.byCategory.direct?.recall).toBe(1);
     expect(report.byCategory.unanswerable?.hitRate).toBe(1);
+  });
+
+  it("supports custom reciprocal-rank cutoffs and calculates partial recall", () => {
+    const multiReference: RetrievalEvalExample = {
+      ...answerable,
+      id: "multi-reference",
+      relevant: ["JHN.3.16", "JHN.3.17"],
+    };
+    const result = scoreRetrievalExample(multiReference, [
+      { ref: "PSA.23.1" },
+      { ref: "JHN.3.16" },
+    ]);
+    const report = buildRetrievalReport([multiReference], [result]);
+
+    expect(result.recall).toBe(0.5);
   });
 
   it("rejects mismatched examples and results", () => {

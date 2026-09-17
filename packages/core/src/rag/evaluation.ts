@@ -15,6 +15,7 @@ export interface RetrievalExampleResult {
   id: string;
   hit: boolean;
   reciprocalRank: number;
+  recall: number;
   precision: number;
   falsePositive: boolean;
   returned: string[];
@@ -23,10 +24,15 @@ export interface RetrievalExampleResult {
 export interface RetrievalEvalReport {
   count: number;
   hitRate: number;
+  answerableHitRate: number;
   meanReciprocalRank: number;
+  meanRecall: number;
   meanPrecision: number;
   falsePositiveRate: number;
-  byCategory: Record<string, { count: number; hitRate: number; precision: number }>;
+  byCategory: Record<
+    string,
+    { count: number; hitRate: number; recall: number; precision: number }
+  >;
   examples: RetrievalExampleResult[];
 }
 
@@ -38,12 +44,16 @@ export function scoreRetrievalExample(
   const relevant = new Set(example.relevant);
   const firstRelevant = returned.findIndex((ref) => relevant.has(ref));
   const relevantReturned = returned.filter((ref) => relevant.has(ref)).length;
-  const hit = firstRelevant >= 0;
 
   return {
     id: example.id,
-    hit: example.answerable ? hit : !hit,
-    reciprocalRank: example.answerable && hit ? 1 / (firstRelevant + 1) : 0,
+    hit: example.answerable ? (relevantReturned > 0) : (returned.length === 0),
+    reciprocalRank: example.answerable && (relevantReturned > 0) ? 1 / (firstRelevant + 1) : 0,
+    recall: example.answerable
+      ? relevantReturned / Math.max(relevant.size, 1)
+      : returned.length === 0
+        ? 1
+        : 0,
     precision: example.answerable
       ? relevantReturned / Math.max(returned.length, 1)
       : returned.length === 0
@@ -76,16 +86,20 @@ export function buildRetrievalReport(
     categoryReport[category] = {
       count: categoryResults.length,
       hitRate: average(categoryResults.map((result) => Number(result.hit))),
+      recall: average(categoryResults.map((result) => result.recall)),
       precision: average(categoryResults.map((result) => result.precision)),
     };
   }
 
   const unanswerableResults = results.filter((_, index) => examples[index]?.answerable === false);
+  const answerableResults = results.filter((_, index) => examples[index]?.answerable !== false);
 
   return {
     count: results.length,
     hitRate: average(results.map((result) => Number(result.hit))),
+    answerableHitRate: average(answerableResults.map((result) => Number(result.hit))),
     meanReciprocalRank: average(results.map((result) => result.reciprocalRank)),
+    meanRecall: average(answerableResults.map((result) => result.recall)),
     meanPrecision: average(results.map((result) => result.precision)),
     falsePositiveRate: average(unanswerableResults.map((result) => Number(result.falsePositive))),
     byCategory: categoryReport,

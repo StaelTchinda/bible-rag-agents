@@ -31,7 +31,9 @@ for (const example of retrievalExamples) {
 const report = buildRetrievalReport(retrievalExamples, results);
 console.log(`Retrieval evaluation (${report.count} examples)`);
 console.log(`  hit rate:             ${(report.hitRate * 100).toFixed(1)}%`);
+console.log(`  answerable hit rate:  ${(report.answerableHitRate * 100).toFixed(1)}%`);
 console.log(`  mean reciprocal rank: ${report.meanReciprocalRank.toFixed(3)}`);
+console.log(`  mean recall:           ${(report.meanRecall * 100).toFixed(1)}%`);
 console.log(`  mean precision:       ${(report.meanPrecision * 100).toFixed(1)}%`);
 console.log(`  false-positive rate:  ${(report.falsePositiveRate * 100).toFixed(1)}%`);
 
