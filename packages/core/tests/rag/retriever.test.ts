@@ -1,13 +1,13 @@
 import { describe, expect, it } from "vitest";
-import type { EmbeddingProvider } from "../providers/types";
-import type { Translation, Verse } from "../scripture/types";
-import { BruteForceVectorStore } from "./brute-force-store";
+import type { EmbeddingProvider } from "../../src/providers/types";
+import type { Translation, Verse } from "../../src/scripture/types";
+import { BruteForceVectorStore } from "../../src/rag/brute-force-store";
 import {
   type RetrievalEvalExample,
   buildRetrievalReport,
   scoreRetrievalExample,
-} from "./evaluation";
-import { retrieve } from "./retriever";
+} from "../../eval/rag/evaluation";
+import { retrieve } from "../../src/rag/retriever";
 
 const embedder: EmbeddingProvider = {
   id: "fixture",

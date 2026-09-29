@@ -1,4 +1,4 @@
-import type { RetrievalEvalExample } from "../../packages/core/src/rag/evaluation";
+import type { RetrievalEvalExample } from "../../packages/core/eval/rag/evaluation";
 
 export const retrievalExamples: RetrievalEvalExample[] = [
   // JHN.3.16: "For God so loved the world, that he gave his one and only

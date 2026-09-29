@@ -1,4 +1,4 @@
-import type { Citation } from "./retriever";
+import type { Citation } from "../../src/rag/retriever";
 
 export interface RetrievalEvalExample {
   id: string;
