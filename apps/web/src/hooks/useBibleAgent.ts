@@ -51,7 +51,18 @@ export interface ChatTurn {
   pending?: boolean;
 }
 
-export function useBibleAgent() {
+export interface UseBibleAgent {
+  status: AgentStatus;
+  progress: string;
+  error?: string;
+  turns: ChatTurn[];
+  init: () => Promise<void>;
+  ask: (query: string, persona: PersonaConfig) => Promise<void>;
+  resetTurns: () => void;
+  getChapter: (book: string, chapter: number, translation: Translation) => Verse[];
+}
+
+export function useBibleAgent(): UseBibleAgent {
   const [status, setStatus] = useState<AgentStatus>("idle");
   const [progress, setProgress] = useState("");
   const [error, setError] = useState<string | undefined>();
@@ -170,11 +181,15 @@ export function useBibleAgent() {
     [commit, updateTurn],
   );
 
+  const resetTurns = useCallback(() => {
+    commit([]);
+  }, [commit]);
+
   const getChapter = useCallback(
     (book: string, chapter: number, translation: Translation): Verse[] =>
       store.current?.getChapter(book, chapter, translation) ?? [],
     [],
   );
 
-  return { status, progress, error, turns, init, ask, getChapter };
+  return { status, progress, error, turns, init, ask, resetTurns, getChapter };
 }

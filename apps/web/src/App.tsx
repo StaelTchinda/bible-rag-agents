@@ -8,7 +8,7 @@ import { useBibleAgent } from "./hooks/useBibleAgent";
 import { DEFAULT_WEBLLM_MODEL } from "./providers/webllm";
 
 export function App() {
-  const { status, progress, error, turns, init, ask, getChapter } = useBibleAgent();
+  const { status, progress, error, turns, init, ask, resetTurns, getChapter } = useBibleAgent();
   const [input, setInput] = useState("");
   const [persona, setPersona] = useState<PersonaConfig>(berean);
   const [chapter, setChapter] = useState<ChapterView | null>(null);
@@ -30,6 +30,11 @@ export function App() {
       void ask(query, persona);
     }
   };
+
+  const onPersonaChange = (newPersona: PersonaConfig) => {
+    setPersona(newPersona);
+    resetTurns();
+  }
 
   const openChapter = (citation: Citation) => {
     const parsed = parseRef(citation.ref);
@@ -73,7 +78,7 @@ export function App() {
 
       {started && (
         <section className="chat">
-          <PersonaPicker selectedId={persona.id} onSelect={setPersona} disabled={generating} />
+          <PersonaPicker selectedId={persona.id} onSelect={onPersonaChange} disabled={generating} />
           <p className="persona-hint">{persona.description}</p>
           <ProviderBadge modelId={DEFAULT_WEBLLM_MODEL} />
           <div className="messages">
