@@ -26,7 +26,7 @@ export interface PersonaConfig {
   id: string;
   displayName: string;
   description: string;
-  systemPrompt: string;
+  systemPrompt: PersonaPrompt;
   retrieval: RetrievalParams;
   generation: { temperature: number; maxTokens: number };
   output: PersonaOutput;
