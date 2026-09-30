@@ -17,6 +17,14 @@ export interface PersonaOutput {
   sections?: string[];
 }
 
+export type PersonaPrompt = string | { 
+  role: string;
+  task: string;
+  outputFormat?: string;
+  examples?: string[];
+  context?: string;
+};
+
 /**
  * A persona is pure data over the shared runtime: a voice (system prompt), a
  * retrieval strategy, generation settings, and optional guardrails. Adding an
