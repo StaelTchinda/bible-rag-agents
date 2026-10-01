@@ -120,6 +120,41 @@ Alternatives are:
 
 Using the provided user message as query for retrieval may lead to bad results, as the user message usually has a different structure (often shorter) and syntax (question vs sentence) than the corpus. To paliate this issue, one does generate a hypothetical response to the user message, and use it as query. This may increase latency, but also improves the relevance of the retrieved documents.
 
+### Add metadata to chunks
 
-### 
+> Effort: medium
+> Impact: undefined
+
+Additionally to pure text, one may add metadata to the chunks. It helps to pre-filter and to refine retrieved chunks to improve the relevance of used chunks. It is however still unsure how much it could be used. An idea would be to add objective data about the references, like the genre of the book and prefer some genres for some agents, e.g. for historian, prioritize historic books.
+
+### Use HNSW - Hierarchical Navigable Small World
+
+> Effort: medium
+> Impact: undefined
+
+It is state of the art for retrieving.
+
+### Add reranking
+
+> Effort: high
+> Impact: undefined
+
+Reranking is common practice in RAG. One does first retrieve around hundred(s) of chunks (from a million in the database), and then refines the selection to only few by using reranking and only keeping the most relevant. Think of it like using retrieval as fast but less accurate method to get ok results fast, and reranking as slower but more accurate method to only keep the best results for generation.
+
+### Use better prompts (Prompt engineering)
+
+> Effort: low
+> Impact: high
+
+See [prompt patterns in RAG best practices](https://github.com/StaelTchinda/rag-best-practices/blob/master/RAG_PROMPT_PATTERNS.md) repo.
+
+### Use a better dataset for evaluation
+
+> Effort: medium
+> Impact: high
+
+To ensure the quality of the system, evaluation is key from the beginning. I originally let A.I. create a small dataset for that, but it is too shallow, and not realistic. Some more useful datasets to use include ![Bible-responses-dataset-gotquestions](https://huggingface.co/datasets/vericudebuget/Bible-responses-dataset-gotquestions).
+
+Interesting but less relevant datasets include: 
+- [BibleData](https://www.kaggle.com/datasets/bradystephenson/bibledata) - with [Github](https://github.com/BradyStephenson/bible-data).
 
