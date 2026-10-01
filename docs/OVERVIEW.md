@@ -94,3 +94,32 @@ Built as a **vertical slice first** — one agent end-to-end — then broadened.
 - **Same-language retrieval bias:** a German query currently surfaces German verses (English → English). The dedup-by-ref merge attaches the other translation as a parallel when scores compete; true cross-lingual recall is a metric for the eval harness (and a reason to evaluate EmbeddingGemma).
 - **Bundle size:** the web build is large (~7 MB JS + ~21 MB WASM); code-splitting + workers are planned.
 - **The Deceiver** ships last, only once the guardrail eval harness exists.
+
+--- 
+
+## Brainstorming
+
+This section highlights some ideas to improve the system worth revisiting later.
+
+### Use a different chunking approach
+
+> Effort: low
+> Impact: high
+
+As of today (01.10.2026), the system chunks verses one by one. This may lead to a worse retrieval and generation quality later, as very often a single verse may not contain enough meaning to identify connections or even to generate useful content.
+
+Alternatives are:
+
+- chunking by chapter: it is a simple approach, yet would lead to chunks with more useful meaning. However, some chunks may be of drastically different lenghts - from 2 up 176 verses. Furthermore, different chapters do not always reveal different content blocks. A chapter may contain multiple content blocks, and a contain block may be splitted across multiple chapters.
+- chunking by content blocks: it is a more challenging approach, as the splitting in content blocks is currently not available. However, It would lead to chunks with even more useful meaning than the chunking by chapter. The issue with the lenghts' impartiality may remain.
+
+### Implement HyDE - Hypothetical Document Embedding
+
+> Effort: medium
+> Impact: high
+
+Using the provided user message as query for retrieval may lead to bad results, as the user message usually has a different structure (often shorter) and syntax (question vs sentence) than the corpus. To paliate this issue, one does generate a hypothetical response to the user message, and use it as query. This may increase latency, but also improves the relevance of the retrieved documents.
+
+
+### 
+
