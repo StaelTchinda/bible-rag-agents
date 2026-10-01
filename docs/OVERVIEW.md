@@ -153,8 +153,8 @@ See [prompt patterns in RAG best practices](https://github.com/StaelTchinda/rag-
 > Effort: medium
 > Impact: high
 
-To ensure the quality of the system, evaluation is key from the beginning. I originally let A.I. create a small dataset for that, but it is too shallow, and not realistic. Some more useful datasets to use include ![Bible-responses-dataset-gotquestions](https://huggingface.co/datasets/vericudebuget/Bible-responses-dataset-gotquestions).
+To ensure the quality of the system, evaluation is key from the beginning. I originally let A.I. create a small dataset for that, but it is too shallow, and not realistic. Some more useful datasets to use include [Bible-responses-dataset-gotquestions](https://huggingface.co/datasets/vericudebuget/Bible-responses-dataset-gotquestions), [BibleQA](https://github.com/helen-jiahe-zhao/BibleQA).
 
 Interesting but less relevant datasets include: 
 - [BibleData](https://www.kaggle.com/datasets/bradystephenson/bibledata) - with [Github](https://github.com/BradyStephenson/bible-data).
-
+- [bible_databases](https://github.com/scrollmapper/bible_databases). 
